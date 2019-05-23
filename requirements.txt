@@ -1,0 +1,3 @@
+pygal
+flask
+Adafruit_DHT
