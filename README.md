@@ -40,3 +40,25 @@ sudo python setup.py install
 cd examples
 sudo ./AdafruitDHT.py 2302 4
 ```
+
+## Running Telemetry
+
+Run the peripheral read loop
+
+```bash
+python read_cycle.py
+```
+
+which will start to fill up data.csv, then run the Http server
+
+```bash
+python http_interface.py
+```
+
+which will provide test charts on http://{ip-address}:{port}/report
+
+### Plans
+
+- Move to a time series database (InfluxDb) and use third party library for charts.
+- Add light sensors, window state/control and perhaps automated watering
+- Add camera
