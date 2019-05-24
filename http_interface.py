@@ -17,6 +17,8 @@ def read_data():
 
     with open('data.csv', mode='r') as data_file:
         for row in csv.reader(data_file, delimiter=','):
+            if len(row) < 3:
+                 continue;
             time = datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S.%f')
             temp = float(row[1])
             humidity = float(row[2])
@@ -57,4 +59,4 @@ def home():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="192.168.1.66") #192.168.1.72
+    app.run(debug=True, host="192.168.1.72") #192.168.1.72
