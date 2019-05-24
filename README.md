@@ -8,7 +8,7 @@ Current using a Rasberry Pi 3 Model B v1.2
 
 ## Temp/Humidity
 
-We are using the AM2302 wired as follows
+We are using the [AM2302](https://cdn-shop.adafruit.com/datasheets/Digital+humidity+and+temperature+sensor+AM2302.pdf) wired as follows
 
 ```
 VCC -> Pi Pin 1
