@@ -58,6 +58,8 @@ while True:
     time = datetime.datetime.now()
     h, t = get_readings()
     print('Read @{0}: Temp={1:0.1f}*  Humidity={2:0.1f}%'.format(time, t, h))
-    record_reading_to_db(time, h, t)
-    record_reading_to_file(time, h, t)
-    sleep(60)
+    # Make sure measurements are not invalid reading
+    if h >= 0 and h <= 100:
+        record_reading_to_db(time, h, t)
+        record_reading_to_file(time, h, t)
+        sleep(60)
