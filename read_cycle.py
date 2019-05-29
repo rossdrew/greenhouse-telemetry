@@ -18,9 +18,9 @@ def get_weather_readings():
                                                                                                 open_weather_map_app_id)
     resp = requests.get(url)
     weather_data = resp.json()
-    temp = weather_data['main']['temp']
     humidity = weather_data['main']['humidity']
-    return temp, humidity
+    temp = weather_data['main']['temp']
+    return humidity, temp
 
 
 def get_am2302_readings():
