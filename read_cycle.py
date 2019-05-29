@@ -1,6 +1,7 @@
 import csv
 import datetime
 import Adafruit_DHT
+import requests
 
 from time import sleep
 from influxdb import InfluxDBClient
@@ -8,8 +9,21 @@ from influxdb import InfluxDBClient
 sensor = Adafruit_DHT.AM2302
 pin = 4
 
+location = ''
+open_weather_map_app_id = ''
 
-def get_readings():
+
+def get_weather_readings():
+    url = 'https://api.openweathermap.org/data/2.5/weather?q={0}&appid={1}&units=metric'.format(location,
+                                                                                                open_weather_map_app_id)
+    resp = requests.get(url)
+    weather_data = resp.json()
+    temp = weather_data['main']['temp']
+    humidity = weather_data['main']['humidity']
+    return temp, humidity
+
+
+def get_am2302_readings():
     '''
     :return: (humidity_reading, temperature_reading)
     '''
@@ -21,11 +35,11 @@ def get_readings():
         print('ERROR: Failure retrieving Humidity/Temp')
 
 
-def record_reading_to_db(humidity_reading, time_reading):
+def record_reading_to_db(humidity_reading, temp_reading):
     '''
     Record the humidity_reading and time_reading for the given time in a time series database
     '''
-    dbClient = InfluxDBClient('localhost', 8086, 'root', 'root', 'TelemetryHistory')
+    db_client = InfluxDBClient('localhost', 8086, 'root', 'root', 'TelemetryHistory')
     record_entry = [
         {
             "measurement": "am2302",
@@ -36,19 +50,40 @@ def record_reading_to_db(humidity_reading, time_reading):
             },
             #"time": "2009-11-10T23:00:00Z",
             "fields": {
-                "temp": time_reading,
+                "temp": temp_reading,
                 "humidity": humidity_reading
             }
         }
     ]
-    write_success = dbClient.write_points(record_entry)
+    write_success = db_client.write_points(record_entry)
     print("Written!" if write_success else "ERROR: Not Written!")
     #loginRecords = dbClient.query('select * from am2302')
     #for point in loginRecords.get_points():
     #    print(point)
     #dbs = dbClient.get_list_database()
     #print(dbs)
-    dbClient.close()
+    db_client.close()
+
+
+def record_weather_to_db(humidity_reading, temp_reading):
+    db_client = InfluxDBClient('localhost', 8086, 'root', 'root', 'TelemetryHistory')
+    record_entry = [
+        {
+            "measurement": "weather",
+            "tags": {
+                "update": "whole",
+                "device": "openweathermap",
+                "location": "inverkeithing"
+            },
+            #"time": "2009-11-10T23:00:00Z",
+            "fields": {
+                "temp": temp_reading,
+                "humidity": humidity_reading
+            }
+        }
+    ]
+    write_success = db_client.write_points(record_entry)
+    print("Written!" if write_success else "ERROR: Not Written!")
 
 
 def record_reading_to_file(time, humidity_reading, time_reading):
@@ -66,10 +101,12 @@ while True:
     Main program loop
     '''
     time = datetime.datetime.now()
-    h, t = get_readings()
+    h, t = get_am2302_readings()
+    hE, tE = get_weather_readings()
     print('Read @{0}: Temp={1:0.1f}*  Humidity={2:0.1f}%'.format(time, t, h))
-    # Make sure measurements are not invalid reading
+    #Make sure measurements are not invalid reading
     if h >= 0 and h <= 100:
         record_reading_to_db(time, h, t)
         record_reading_to_file(time, h, t)
+        record_weather_to_db(hE, tE)
         sleep(60)

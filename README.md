@@ -41,6 +41,10 @@ cd examples
 sudo ./AdafruitDHT.py 2302 4
 ```
 
+## Local Temp/Humidity
+
+Local weather data is retrieved from [OpenWeatherMap](https://openweathermap.org/) API and recorded to DB for eachh reading for comparison.
+
 ## Running Telemetry
 
 Run the peripheral read loop
@@ -57,7 +61,12 @@ python http_interface.py
 
 which will provide test charts on http://{ip-address}:{port}/report
 
-#### Sample Data
+
+## Recording
+
+Data is recorded to a local InfluxDB and local sensors are also recorded to a local file in CSV format.
+
+#### Sample File Data
 
 ```
 2019-05-24 12:55:30.221564,25.899999618530273,43.29999923706055
@@ -70,6 +79,54 @@ which will provide test charts on http://{ip-address}:{port}/report
 2019-05-24 13:02:34.316845,24.5,47.5
 2019-05-24 13:03:34.903718,24.0,48.900001525878906
 2019-05-24 13:04:35.490432,23.700000762939453,49.79999923706055
+```
+
+#### Sample Weather JSON Data
+
+```json
+{
+	"coord": {
+		"lon": -0,
+		"lat": 0
+	},
+	"weather": [
+		{
+			"id": 500,
+			"main": "Rain",
+			"description": "light rain",
+			"icon": "10d"
+		}
+	],
+	"base": "stations",
+	"main": {
+		"temp": 10.49,
+		"pressure": 1014,
+		"humidity": 66,
+		"temp_min": 8,
+		"temp_max": 12.22
+	},
+	"visibility": 10000,
+	"wind": {
+		"speed": 3.1,
+		"deg": 240
+	},
+	"clouds": {
+		"all": 75
+	},
+	"dt": 1559121266,
+	"sys": {
+		"type": 1,
+		"id": 1442,
+		"message": 0.0063,
+		"country": "GB",
+		"sunrise": 1559101162,
+		"sunset": 1559162573
+	},
+	"timezone": 3600,
+	"id": 1,
+	"name": "Location",
+	"cod": 1
+}
 ```
 
 ### Plans
