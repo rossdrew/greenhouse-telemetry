@@ -106,7 +106,7 @@ while True:
     print('Read @{0}: Temp={1:0.1f}*  Humidity={2:0.1f}%'.format(time, t, h))
     #Make sure measurements are not invalid reading
     if h >= 0 and h <= 100:
-        record_reading_to_db(time, h, t)
+        record_reading_to_db(h, t)
         record_reading_to_file(time, h, t)
         record_weather_to_db(hE, tE)
         sleep(60)
