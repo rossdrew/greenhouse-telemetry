@@ -2,4 +2,5 @@ pygal
 flask
 Adafruit_DHT
 influxdb
-
+ConfigParser
+requests
