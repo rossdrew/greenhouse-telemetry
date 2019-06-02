@@ -50,8 +50,8 @@ def record_reading_to_db(humidity_reading, temp_reading):
             },
             #"time": "2009-11-10T23:00:00Z",
             "fields": {
-                "temp": temp_reading,
-                "humidity": humidity_reading
+                "temp": float(temp_reading),
+                "humidity": float(humidity_reading)
             }
         }
     ]
@@ -77,8 +77,8 @@ def record_weather_to_db(humidity_reading, temp_reading):
             },
             #"time": "2009-11-10T23:00:00Z",
             "fields": {
-                "temp": temp_reading,
-                "humidity": humidity_reading
+                "temp": float(temp_reading),
+                "humidity": float(humidity_reading)
             }
         }
     ]
