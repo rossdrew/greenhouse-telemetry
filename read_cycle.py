@@ -1,26 +1,34 @@
 import csv
 import datetime
-import Adafruit_DHT
 import requests
+import Adafruit_DHT
+import configparser
 
 from time import sleep
 from influxdb import InfluxDBClient
 
+config = configparser.RawConfigParser()
+config.read('config.properties')
+
 sensor = Adafruit_DHT.AM2302
-pin = 4
+pin = config.get('AM2302','pin')
 
-location = ''
-open_weather_map_app_id = ''
-
+location = config.get('Weather','location')
+open_weather_map_app_id = config.get('Weather','open_weather_map_app_id')
 
 def get_weather_readings():
     url = 'https://api.openweathermap.org/data/2.5/weather?q={0}&appid={1}&units=metric'.format(location,
                                                                                                 open_weather_map_app_id)
-    resp = requests.get(url)
-    weather_data = resp.json()
-    humidity = weather_data['main']['humidity']
-    temp = weather_data['main']['temp']
-    return humidity, temp
+    try:
+        resp = requests.get(url)
+        weather_data = resp.json()
+        print(weather_data)
+        humidity = weather_data['main']['humidity']
+        temp = weather_data['main']['temp']
+        return humidity, temp
+    except requests.exceptions.RequestException as e:
+        print("Exception while retrieving weather information: {0}".format(e))
+        return None, None
 
 
 def get_am2302_readings():
@@ -108,5 +116,6 @@ while True:
     if h >= 0 and h <= 100:
         record_reading_to_db(h, t)
         record_reading_to_file(time, h, t)
-        record_weather_to_db(hE, tE)
+        if hE is not None:
+            record_weather_to_db(hE, tE)
         sleep(60)
