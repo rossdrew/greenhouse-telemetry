@@ -11,10 +11,11 @@ config = configparser.RawConfigParser()
 config.read('config.properties')
 
 sensor = Adafruit_DHT.AM2302
-pin = config.get('AM2302','pin')
+pin = config.get('AM2302', 'pin')
 
-location = config.get('Weather','location')
-open_weather_map_app_id = config.get('Weather','open_weather_map_app_id')
+location = config.get('Weather', 'location')
+open_weather_map_app_id = config.get('Weather', 'open_weather_map_app_id')
+
 
 def get_weather_readings():
     url = 'https://api.openweathermap.org/data/2.5/weather?q={0}&appid={1}&units=metric'.format(location,
@@ -32,9 +33,9 @@ def get_weather_readings():
 
 
 def get_am2302_readings():
-    '''
+    """
     :return: (humidity_reading, temperature_reading)
-    '''
+    """
     humidity, temp = Adafruit_DHT.read_retry(sensor, pin)
 
     if humidity is not None and temp is not None:
@@ -44,9 +45,9 @@ def get_am2302_readings():
 
 
 def record_reading_to_db(humidity_reading, temp_reading):
-    '''
+    """
     Record the humidity_reading and time_reading for the given time in a time series database
-    '''
+    """
     db_client = InfluxDBClient('localhost', 8086, 'root', 'root', 'TelemetryHistory')
     record_entry = [
         {
@@ -65,11 +66,6 @@ def record_reading_to_db(humidity_reading, temp_reading):
     ]
     write_success = db_client.write_points(record_entry)
     print("Written!" if write_success else "ERROR: Not Written!")
-    #loginRecords = dbClient.query('select * from am2302')
-    #for point in loginRecords.get_points():
-    #    print(point)
-    #dbs = dbClient.get_list_database()
-    #print(dbs)
     db_client.close()
 
 
@@ -95,9 +91,9 @@ def record_weather_to_db(humidity_reading, temp_reading):
 
 
 def record_reading_to_file(time, humidity_reading, time_reading):
-    '''
+    """
     Record the humidity_reading and time_reading for the given time in a local file
-    '''
+    """
     with open('data.csv', mode='a+') as data_file:
         csv_file = csv.writer(data_file, delimiter=',')
         print('@{0}, Saved: Temp={1:0.1f}*  Humidity={2:0.1f}%'.format(time, time_reading, humidity_reading))
@@ -105,15 +101,15 @@ def record_reading_to_file(time, humidity_reading, time_reading):
 
 
 while True:
-    '''
+    """
     Main program loop
-    '''
+    """
     time = datetime.datetime.now()
     h, t = get_am2302_readings()
     hE, tE = get_weather_readings()
     print('Read @{0}: Temp={1:0.1f}*  Humidity={2:0.1f}%'.format(time, t, h))
-    #Make sure measurements are not invalid reading
-    if h >= 0 and h <= 100:
+    # Make sure measurements are not invalid reading
+    if 0 <= h <= 100:
         record_reading_to_db(h, t)
         record_reading_to_file(time, h, t)
         if hE is not None:
