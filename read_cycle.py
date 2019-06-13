@@ -5,6 +5,7 @@ import Adafruit_DHT
 import configparser
 
 from time import sleep
+from http import HTTPStatus
 from influxdb import InfluxDBClient
 
 config = configparser.RawConfigParser()
@@ -22,11 +23,15 @@ def get_weather_readings():
                                                                                                 open_weather_map_app_id)
     try:
         resp = requests.get(url)
-        weather_data = resp.json()
-        print(weather_data)
-        humidity = weather_data['main']['humidity']
-        temp = weather_data['main']['temp']
-        return humidity, temp
+        if resp.status_code == HTTPStatus.OK:
+            weather_data = resp.json()
+            print(weather_data)
+            humidity = weather_data['main']['humidity']
+            temp = weather_data['main']['temp']
+            return humidity, temp
+        else:
+            print("ERROR: Fetching data. resp")
+            return None, None
     except requests.exceptions.RequestException as e:
         print("Exception while retrieving weather information: {0}".format(e))
         return None, None
