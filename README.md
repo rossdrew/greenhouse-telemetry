@@ -43,24 +43,25 @@ sudo ./AdafruitDHT.py 2302 4
 
 ## Local Temp/Humidity
 
-Local weather data is retrieved from [OpenWeatherMap](https://openweathermap.org/) API and recorded to DB for eachh reading for comparison.
+Local weather data is retrieved from [OpenWeatherMap](https://openweathermap.org/) API and recorded to DB for each reading for comparison.
 
 ## Running Telemetry
 
 Run the peripheral read loop
 
 ```bash
-python read_cycle.py
+python read_cycle_v2.py
 ```
 
-which will start to fill up data.csv, then run the Http server
+which will start to fill up data.csv and a specified InfluxDB, then run the Http server
 
 ```bash
 python http_interface.py
 ```
 
-which will provide test charts on http://{ip-address}:{port}/report
+which will provide test charts on http://{ip-address}:{port}/report generated from file based data.
 
+Running in a live environment (Raspberry Pi with a AM2302 sensor) will require swapping out the used of `TestClimateDataSource` for the `AM2302DataSource`.  I'm yet to figure out a nice way to automate this.
 
 ## Recording
 
