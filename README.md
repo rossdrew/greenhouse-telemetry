@@ -4,7 +4,7 @@ _Some code experimenting with greenhouse telemetry_
 
 ## Controller
 
-Current using a Rasberry Pi 3 Model B v1.2
+Current using a Rasberry Pi 3 Model B v1.2 with Python.  I may change the language later.  [I've written a series on my progress](https://dev.to/rossdrew/technology-choices-in-monitoring-a-greenhouse-2ppf)
 
 ## Temp/Humidity
 
