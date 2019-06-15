@@ -54,4 +54,4 @@ while True:
                                                        ("PERSISTED" if weather_data_source else "ERR"),
                                                       )
           )
-    sleep(10)
+    sleep(60)
