@@ -61,7 +61,7 @@ python http_interface.py
 
 which will provide test charts on http://{ip-address}:{port}/report generated from file based data.
 
-Running in a live environment (Raspberry Pi with a AM2302 sensor) will require swapping out the used of `TestClimateDataSource` for the `AM2302DataSource`.  I'm yet to figure out a nice way to automate this.
+Running in a test environment (not on a Raspberry Pi with a AM2302 sensor) will require swapping out the used of `TestClimateDataSource` for the `AM2302DataSource`.  I'm yet to figure out a nice way to automate this.
 
 ## Recording
 

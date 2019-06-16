@@ -4,9 +4,9 @@ import configparser
 
 from time import sleep
 from persistance.filestore import FileStore
-#from datasource.am2302 import AM2302DataSource
+from datasource.am2302 import AM2302DataSource
 from datasource.weather import OpenWeatherMapDataSource
-from datasource.test_data_source import TestClimateDataSource
+#from datasource.test_data_source import TestClimateDataSource
 from persistance.influxDb import InfluxDBStore, TimeSeriesMeasurementEntry
 
 # Setup
@@ -17,8 +17,8 @@ location = config.get('Weather', 'location')
 open_weather_map_app_id = config.get('Weather', 'open_weather_map_app_id')
 
 weather_data_source = OpenWeatherMapDataSource(location, open_weather_map_app_id)
-test_data_source = TestClimateDataSource()
-#am2302_data_source = AM2302DataSource(pin=config.get('AM2302', 'pin'))
+#test_data_source = TestClimateDataSource()
+am2302_data_source = AM2302DataSource(pin=config.get('AM2302', 'pin'))
 
 file_store = FileStore()
 influx_db_store = InfluxDBStore('TelemetryHistory')
@@ -28,7 +28,8 @@ influx_db_store = InfluxDBStore('TelemetryHistory')
 while True:
     time = datetime.datetime.now()
     wH, wT = weather_data_source.read()
-    ghH, ghT = test_data_source.read()
+    #ghH, ghT = test_data_source.read()
+    ghH, ghT = am2302_data_source.read()
     print("Greenhouse Temp: {0}, Weather Temp: {1}".format(ghT, wT))
 
     greenhouse = TimeSeriesMeasurementEntry(measurement='am2302',
@@ -37,7 +38,7 @@ while True:
                                                   "location": "gh1"},
                                             fields={"temp": float(ghT),
                                                     "humidity": float(ghH)})
-    greenhouse_data_persisted = True # influx_db_store.persist(greenhouse)
+    greenhouse_data_persisted = influx_db_store.persist(greenhouse).to_record()
     file_store.persist(time, ghH, ghT)
 
     weather = TimeSeriesMeasurementEntry(measurement='weather',
@@ -47,7 +48,7 @@ while True:
                                          fields={"temp": float(wT),
                                                  "humidity": float(wH)}
                                          )
-    weather_data_persisted = True # influx_db_store.persist(weather)
+    weather_data_persisted = influx_db_store.persist(weather).to_record()
 
     print("[{0}] Greenhouse: {1}, Weather: {2}".format(time,
                                                        ("PERSISTED" if greenhouse_data_persisted else "ERR"),
