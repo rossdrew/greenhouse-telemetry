@@ -38,7 +38,7 @@ while True:
                                                   "location": "gh1"},
                                             fields={"temp": float(ghT),
                                                     "humidity": float(ghH)})
-    greenhouse_data_persisted = influx_db_store.persist(greenhouse).to_record()
+    greenhouse_data_persisted = influx_db_store.persist(greenhouse.to_record())
     file_store.persist(time, ghH, ghT)
 
     weather = TimeSeriesMeasurementEntry(measurement='weather',
@@ -48,7 +48,7 @@ while True:
                                          fields={"temp": float(wT),
                                                  "humidity": float(wH)}
                                          )
-    weather_data_persisted = influx_db_store.persist(weather).to_record()
+    weather_data_persisted = influx_db_store.persist(weather.to_record())
 
     print("[{0}] Greenhouse: {1}, Weather: {2}".format(time,
                                                        ("PERSISTED" if greenhouse_data_persisted else "ERR"),
