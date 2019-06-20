@@ -6,6 +6,7 @@ from time import sleep
 from persistance.filestore import FileStore
 from datasource.am2302 import AM2302DataSource
 from datasource.weather import OpenWeatherMapDataSource
+from datasource.cpu import CPU
 #from datasource.test_data_source import TestClimateDataSource
 from persistance.influxDb import InfluxDBStore, TimeSeriesMeasurementEntry
 
@@ -22,6 +23,8 @@ am2302_data_source = AM2302DataSource(pin=config.get('AM2302', 'pin'))
 
 file_store = FileStore()
 influx_db_store = InfluxDBStore('TelemetryHistory')
+
+cpu = CPU()
 #######
 
 
@@ -55,4 +58,11 @@ while True:
                                                        ("PERSISTED" if weather_data_source else "ERR"),
                                                       )
           )
+
+    cpu_data = TimeSeriesMeasurementEntry(measurement="cpu",
+                                          tags={"device": "cpu"},
+                                          fields={"temp": float(cpu.read())})
+
+    cpu_data_persisted = influx_db_store.persist(cpu_data.to_record())
+
     sleep(60)

@@ -4,3 +4,4 @@ Adafruit_DHT
 influxdb
 ConfigParser
 requests
+gpiozero
