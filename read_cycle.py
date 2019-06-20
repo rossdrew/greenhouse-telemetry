@@ -7,6 +7,7 @@ import configparser
 from time import sleep
 from http import HTTPStatus
 from influxdb import InfluxDBClient
+from gpiozero import CPUTemperature
 
 config = configparser.RawConfigParser()
 config.read('config.properties')
@@ -93,6 +94,22 @@ def record_weather_to_db(humidity_reading, temp_reading):
     ]
     write_success = db_client.write_points(record_entry)
     print("Written!" if write_success else "ERROR: Not Written!")
+
+
+def record_cpu_readings_to_db():
+    cpu = CPUTemperature()
+    cpu.temperature
+    with InfluxDBClient('localhost', 8086, 'root', 'root', 'TelemetryHistory') as db_client:
+        db_client.write_points([{
+            "measurement": "cpu",
+            "tags": {
+                "device": "cpu"
+            },
+            "fields": {
+                "temp": float(cpu.temperature)
+            }
+        }])
+    print("CPU @ {0}".format(cpu.temperature))
 
 
 def record_reading_to_file(time, humidity_reading, time_reading):
