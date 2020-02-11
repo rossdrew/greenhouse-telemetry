@@ -132,6 +132,5 @@ Data is recorded to a local InfluxDB and local sensors are also recorded to a lo
 
 ### Plans
 
-- Move to a time series database (InfluxDb) and use third party library for charts.
 - Add light sensors, window state/control and perhaps automated watering
 - Add camera
