@@ -2,6 +2,9 @@
 
 _Some code experimenting with greenhouse telemetry_
 
+ <img align="center" src="https://github.com/rossdrew/gh-telemetry/blob/master/Screenshot%20from%202020-02-17%2021-32-38.png" data-canonical-src="https://github.com/rossdrew/gh-telemetry/blob/master/Screenshot%20from%202020-02-17%2021-32-38.png" alt="Current Greenhouse Grafana overview" width="1000" />
+
+
 ## Controller
 
 Current using a Rasberry Pi 3 Model B v1.2 with Python.  I may change the language later.  [I've written a series on my progress](https://dev.to/rossdrew/technology-choices-in-monitoring-a-greenhouse-2ppf)
