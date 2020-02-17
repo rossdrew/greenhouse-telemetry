@@ -165,6 +165,16 @@ Should be running on <server>:3000
 `python3 -m venv .venv`
 `.venv/bin/pip3 install -r requirements.txt`
 
+### Developing / Debugging
+
+Install sshfs, link development machine to Pi by mounting the source directory and open in development environment
+```bash
+dnf install sshfs
+mkdir /mnt/pi/gh
+sshfs pi@x.x.x.x:/mnt/pi/gh /home/src/pi/gh
+
+```
+
 
 ### Plans
 
