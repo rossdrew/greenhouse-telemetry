@@ -18,15 +18,15 @@ class InfluxDBStore:
         self.password = password
 
     def persist(self, time_series_measurement_entry):
-        with InfluxDBClient(self.server,
-                            self.port,
-                            self.user,
-                            self.password,
-                            self.table) as db_client:
-            write_success = db_client.write_points(time_series_measurement_entry)
-            if not write_success:
-                print("Failed to write entry {0}".format(time_series_measurement_entry))
-            return write_success
+        db_client = InfluxDBClient(self.server,
+                                   self.port,
+                                   self.user,
+                                   self.password,
+                                   self.table)
+        write_success = db_client.write_points(time_series_measurement_entry)
+        if not write_success:
+            print("Failed to write entry {0}".format(time_series_measurement_entry))
+        return write_success
 
 
 class TimeSeriesMeasurementEntry:
