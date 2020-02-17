@@ -61,7 +61,7 @@ while True:
 
     cpu_data = TimeSeriesMeasurementEntry(measurement="cpu",
                                           tags={"device": "cpu"},
-                                          fields={"temp": float(cpu.read())})
+                                          fields={"temp": cpu.read()})
 
     cpu_data_persisted = influx_db_store.persist(cpu_data.to_record())
 
