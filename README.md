@@ -132,7 +132,6 @@ Data is recorded to a local InfluxDB and local sensors are also recorded to a lo
 
 ### Setup
 
-
 #### Install InfluxDB: https://gist.github.com/boseji/bb71910d43283a1b84ab200bcce43c26
 `curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add -`
 `lsb_release -a`
@@ -164,6 +163,7 @@ Should be running on <server>:3000
 #### Python setup
 `python3 -m venv .venv`
 `.venv/bin/pip3 install -r requirements.txt`
+`.venv/bin/pip3 install RPi.GPIO`
 
 ### Developing / Debugging
 
