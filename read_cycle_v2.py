@@ -53,16 +53,17 @@ while True:
                                          )
     weather_data_persisted = influx_db_store.persist(weather.to_record())
 
-    print("[{0}] Greenhouse: {1}, Weather: {2}".format(time,
-                                                       ("PERSISTED" if greenhouse_data_persisted else "ERR"),
-                                                       ("PERSISTED" if weather_data_source else "ERR"),
-                                                      )
-          )
-
     cpu_data = TimeSeriesMeasurementEntry(measurement="cpu",
                                           tags={"device": "cpu"},
                                           fields={"temp": cpu.read()})
 
     cpu_data_persisted = influx_db_store.persist(cpu_data.to_record())
+
+    print("[{0}] Greenhouse: {1}, Weather: {2}, CPU: {3}".format(time,
+                                                       ("PERSISTED" if greenhouse_data_persisted else "ERR"),
+                                                       ("PERSISTED" if weather_data_source else "ERR"),
+                                                       ("PERSISTED" if cpu_data_persisted else "ERR"),
+                                                      )
+          )
 
     sleep(60)
