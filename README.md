@@ -2,8 +2,7 @@
 
 _Some code experimenting with greenhouse telemetry_
 
- <img align="center" src="https://github.com/rossdrew/gh-telemetry/blob/master/img/First%20Run.png" data-canonical-src="https://github.com/rossdrew/gh-telemetry/blob/master/img/First%20Run.png" alt="Current Greenhouse Grafana overview" width="1000" />
-
+![Grafana Screenshot Sample](./img/First%20Run.png?raw=true)
 
 ## Controller
 
