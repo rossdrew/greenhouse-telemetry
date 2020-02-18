@@ -56,13 +56,13 @@ Run the peripheral read loop
 python read_cycle_v2.py
 ```
 
-which will start to fill up data.csv and a specified InfluxDB, then run the Http server
+which will start to fill up data.csv and a specified InfluxDB, then (optionally) run the HTTP server
 
 ```bash
 python http_interface.py
 ```
 
-which will provide test charts on http://{ip-address}:{port}/report generated from file based data.
+which will provide test charts on `http://{ip-address}:{port}/report` generated from file based data.
 
 Running in a test environment (not on a Raspberry Pi with a AM2302 sensor) will require swapping out the used of `TestClimateDataSource` for the `AM2302DataSource`.  I'm yet to figure out a nice way to automate this.
 
