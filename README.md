@@ -2,13 +2,12 @@
 
 _Some code experimenting with greenhouse telemetry and featured in my  [Greenhouse blog series](https://dev.to/rossdrew/technology-choices-in-monitoring-a-greenhouse-2ppf)_
 
-
-
 ![Grafana Screenshot Sample](./img/First%20Run.png?raw=true)
 
 ## Controller
 
-Current using a Rasberry Pi 3 Model B v1.2 with Python.  Currently written in Python, this may change. 
+- Rasberry Pi 3 Model B v1.2 
+- Programmed in Python (may change later)
 
 ## Temp/Humidity
 
