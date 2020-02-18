@@ -1,4 +1,3 @@
-
 import datetime
 import configparser
 
@@ -7,7 +6,7 @@ from persistance.filestore import FileStore
 from datasource.am2302 import AM2302DataSource
 from datasource.weather import OpenWeatherMapDataSource
 from datasource.cpu import CPU
-#from datasource.test_data_source import TestClimateDataSource
+# from datasource.test_data_source import TestClimateDataSource
 from persistance.influxDb import InfluxDBStore, TimeSeriesMeasurementEntry
 
 # Setup
@@ -18,7 +17,7 @@ location = config.get('Weather', 'location')
 open_weather_map_app_id = config.get('Weather', 'open_weather_map_app_id')
 
 weather_data_source = OpenWeatherMapDataSource(location, open_weather_map_app_id)
-#test_data_source = TestClimateDataSource()
+# test_data_source = TestClimateDataSource()
 am2302_data_source = AM2302DataSource(pin=config.get('AM2302', 'pin'))
 
 file_store = FileStore()
@@ -31,7 +30,7 @@ cpu = CPU()
 while True:
     time = datetime.datetime.now()
     wH, wT = weather_data_source.read()
-    #ghH, ghT = test_data_source.read()
+    # ghH, ghT = test_data_source.read()
     ghH, ghT = am2302_data_source.read()
     print("Greenhouse Temp: {0}, Weather Temp: {1}".format(ghT, wT))
 
@@ -47,7 +46,7 @@ while True:
     weather = TimeSeriesMeasurementEntry(measurement='weather',
                                          tags={"update": "whole",
                                                "device": "openweathermap",
-                                               "location": "inverkeithing"},
+                                               "location": location},
                                          fields={"temp": float(wT),
                                                  "humidity": float(wH)}
                                          )
@@ -60,10 +59,10 @@ while True:
     cpu_data_persisted = influx_db_store.persist(cpu_data.to_record())
 
     print("[{0}] Greenhouse: {1}, Weather: {2}, CPU: {3}".format(time,
-                                                       ("PERSISTED" if greenhouse_data_persisted else "ERR"),
-                                                       ("PERSISTED" if weather_data_source else "ERR"),
-                                                       ("PERSISTED" if cpu_data_persisted else "ERR"),
-                                                      )
+                                                                 ("PERSISTED" if greenhouse_data_persisted else "ERR"),
+                                                                 ("PERSISTED" if weather_data_source else "ERR"),
+                                                                 ("PERSISTED" if cpu_data_persisted else "ERR"),
+                                                                 )
           )
 
     sleep(60)
