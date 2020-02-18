@@ -2,7 +2,7 @@
 
 _Some code experimenting with greenhouse telemetry_
 
- <img align="center" src="https://github.com/rossdrew/gh-telemetry/blob/master/Screenshot%20from%202020-02-17%2021-32-38.png" data-canonical-src="https://github.com/rossdrew/gh-telemetry/blob/master/Screenshot%20from%202020-02-17%2021-32-38.png" alt="Current Greenhouse Grafana overview" width="1000" />
+ <img align="center" src="https://github.com/rossdrew/gh-telemetry/blob/master/First%20Run.png" data-canonical-src="https://github.com/rossdrew/gh-telemetry/blob/master/First%20Run.png" alt="Current Greenhouse Grafana overview" width="1000" />
 
 
 ## Controller
