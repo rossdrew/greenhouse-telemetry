@@ -133,7 +133,7 @@ Data is recorded to a local InfluxDB and local sensors are also recorded to a lo
 }
 ```
 
-#### Setup
+## Setup
 
 ##### Install [InfluxDB](https://gist.github.com/boseji/bb71910d43283a1b84ab200bcce43c26): 
 
