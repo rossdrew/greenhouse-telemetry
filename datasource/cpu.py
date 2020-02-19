@@ -8,5 +8,5 @@ class CPU:
     def __init__(self):
         self.cpu = CPUTemperature()
 
-    def read(self):
+    def temperature(self):
         return float(self.cpu.temperature)
