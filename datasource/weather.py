@@ -20,6 +20,7 @@ class OpenWeatherMapDataSource:
                 return humidity, temp
             else:
                 print("ERROR: Fetching datasource: {0}".format(resp))
-                return None, None
         except requests.exceptions.RequestException as e:
             print("Exception while retrieving weather information: {0}".format(e))
+
+        return None, None
