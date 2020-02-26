@@ -47,7 +47,7 @@ while True:
         weather = TimeSeriesMeasurementEntry(measurement='weather',
                                              tags={"update": "whole",
                                                    "device": "openweathermap",
-                                                   "location": "inverkeithing"},
+                                                   "location": "somewhere"},
                                              fields={"temp": float(wT),
                                                      "humidity": float(wH)}
                                              )
