@@ -43,14 +43,17 @@ while True:
     greenhouse_data_persisted = influx_db_store.persist(greenhouse.to_record())
     file_store.persist(time, ghH, ghT)
 
-    weather = TimeSeriesMeasurementEntry(measurement='weather',
-                                         tags={"update": "whole",
-                                               "device": "openweathermap",
-                                               "location": location},
-                                         fields={"temp": float(wT),
-                                                 "humidity": float(wH)}
-                                         )
-    weather_data_persisted = influx_db_store.persist(weather.to_record())
+    if wH is not None and wT is not None:
+        weather = TimeSeriesMeasurementEntry(measurement='weather',
+                                             tags={"update": "whole",
+                                                   "device": "openweathermap",
+                                                   "location": "inverkeithing"},
+                                             fields={"temp": float(wT),
+                                                     "humidity": float(wH)}
+                                             )
+        weather_data_persisted = influx_db_store.persist(weather.to_record())
+    else:
+        weather_data_persisted = False
 
     cpu_data = TimeSeriesMeasurementEntry(measurement="cpu",
                                           tags={"device": "cpu"},
