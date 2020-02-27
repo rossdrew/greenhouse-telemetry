@@ -9,6 +9,10 @@ _Some code experimenting with greenhouse telemetry and featured in my  [Greenhou
 - Rasberry Pi 3 Model B v1.2 
 - Programmed in Python (may change later)
 
+## Progress
+
+ Using [Trello](https://trello.com/b/x3CKANNx/gh-telemetry) to keep track of work
+
 ## Temp/Humidity
 
 We are using the [AM2302](https://cdn-shop.adafruit.com/datasheets/Digital+humidity+and+temperature+sensor+AM2302.pdf) wired as follows
