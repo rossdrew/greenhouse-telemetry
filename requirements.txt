@@ -5,3 +5,4 @@ influxdb
 ConfigParser
 requests
 gpiozero
+RPi.GPIO

@@ -193,7 +193,6 @@ Should be running on <server>:3000
 ```bash
 python3 -m venv .venv
 .venv/bin/pip3 install -r requirements.txt
-.venv/bin/pip3 install RPi.GPIO
 ```
 
 ### Developing / Debugging
