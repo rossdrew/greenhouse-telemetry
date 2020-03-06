@@ -2,7 +2,7 @@
 
 _Some code experimenting with greenhouse telemetry and featured in my  [Greenhouse blog series](https://dev.to/rossdrew/technology-choices-in-monitoring-a-greenhouse-2ppf)_
 
-![Grafana Screenshot Sample](./img/First%20Run.png?raw=true)
+![Grafana Screenshot Sample](./img/Week.png?raw=true)
 
 ## Controller
 
