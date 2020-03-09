@@ -57,7 +57,7 @@ Local weather data is retrieved from [OpenWeatherMap](https://openweathermap.org
 Run the peripheral read loop
 
 ```bash
-python read_cycle_v2.py
+python read_cycle.py
 ```
 
 which will start to fill up a specified InfluxDB
