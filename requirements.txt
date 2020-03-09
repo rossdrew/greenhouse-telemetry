@@ -2,7 +2,7 @@ pygal
 flask
 Adafruit_DHT
 influxdb
-ConfigParser
+configparser
 requests
 gpiozero
 RPi.GPIO
