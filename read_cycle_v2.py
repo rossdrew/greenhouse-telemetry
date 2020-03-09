@@ -13,6 +13,8 @@ from persistance.influxDb import InfluxDBStore, TimeSeriesMeasurementEntry
 config = configparser.RawConfigParser()
 config.read('config.properties')
 
+location = config.get('Deploy', 'name')
+
 location = config.get('Weather', 'location')
 open_weather_map_app_id = config.get('Weather', 'open_weather_map_app_id')
 
@@ -37,7 +39,7 @@ while True:
     greenhouse = TimeSeriesMeasurementEntry(measurement='am2302',
                                             tags={"update": "whole",
                                                   "device": "am2302",
-                                                  "location": "gh1"},
+                                                  "deployment": location},
                                             fields={"temp": float(ghT),
                                                     "humidity": float(ghH)})
     greenhouse_data_persisted = influx_db_store.persist(greenhouse.to_record())
@@ -47,7 +49,8 @@ while True:
         weather = TimeSeriesMeasurementEntry(measurement='weather',
                                              tags={"update": "whole",
                                                    "device": "openweathermap",
-                                                   "location": "somewhere"},
+                                                   "location": location,
+                                                   "deployment": location},
                                              fields={"temp": float(wT),
                                                      "humidity": float(wH)}
                                              )
@@ -56,7 +59,8 @@ while True:
         weather_data_persisted = False
 
     cpu_data = TimeSeriesMeasurementEntry(measurement="cpu",
-                                          tags={"device": "cpu"},
+                                          tags={"device": "cpu",
+                                                "deployment": location},
                                           fields={"temp": cpu.temperature()})
 
     cpu_data_persisted = influx_db_store.persist(cpu_data.to_record())
