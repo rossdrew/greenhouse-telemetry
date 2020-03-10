@@ -174,7 +174,7 @@ sshfs pi@<PI_IP>:/mnt/pi/gh /home/src/pi/gh
 
 ## Running
 
-## Setup config
+### Setup config
 
 You will need to fill config.properties with
 
@@ -190,7 +190,7 @@ location = <location for querying>
 open_weather_map_app_id = <your personal app.id>
 ```
 
-## Setup Database
+### Setup Database
 
 Delete and recreate a new InfluxDb database
 
@@ -198,7 +198,7 @@ Delete and recreate a new InfluxDb database
 python init_db.py
 ```
 
-## Running Telemetry
+### Running Telemetry
 
 Run the peripheral read loop
 
