@@ -52,18 +52,6 @@ sudo ./AdafruitDHT.py 2302 4
 
 Local weather data is retrieved from [OpenWeatherMap](https://openweathermap.org/) API and recorded to DB for each reading for comparison.
 
-## Running Telemetry
-
-Run the peripheral read loop
-
-```bash
-python read_cycle.py
-```
-
-which will start to fill up a specified InfluxDB
-
-Running in a test environment (not on a Raspberry Pi with a AM2302 sensor) will require swapping out the used of `TestClimateDataSource` for the `AM2302DataSource`.  I'm yet to figure out a nice way to automate this.
-
 ## Recording
 
 Data is recorded to a local InfluxDB 
@@ -184,7 +172,46 @@ mkdir /mnt/pi/gh
 sshfs pi@<PI_IP>:/mnt/pi/gh /home/src/pi/gh
 ```
 
-### Plans
+## Running
+
+## Setup config
+
+You will need to fill config.properties with
+
+```
+[Deploy]
+name = "my deployment name"
+
+[AM2302]
+pin = <pin thhat AM2302 is attached to>
+
+[Weather]
+location = <location for querying>
+open_weather_map_app_id = <your personal app.id>
+```
+
+## Setup Database
+
+Delete and recreate a new InfluxDb database
+
+```bash
+python init_db.py
+```
+
+## Running Telemetry
+
+Run the peripheral read loop
+
+```bash
+python read_cycle.py
+```
+
+which will start to fill up a specified InfluxDB
+
+Running in a test environment (not on a Raspberry Pi with a AM2302 sensor) will require swapping out the used of `TestClimateDataSource` for the `AM2302DataSource`.  I'm yet to figure out a nice way to automate this.
+
+
+## Plans
 
 - Add power generation and usage monitoring
 - Add light sensors, window state/control and perhaps automated watering
