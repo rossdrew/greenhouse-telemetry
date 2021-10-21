@@ -210,6 +210,10 @@ which will start to fill up a specified InfluxDB
 
 Running in a test environment (not on a Raspberry Pi with a AM2302 sensor) will require swapping out the used of `TestClimateDataSource` for the `AM2302DataSource`.  I'm yet to figure out a nice way to automate this.
 
+### Experimental Control
+
+There's a simple control cycle in place in run_greenhouse.py.  This will turn a light on during daylight hours and keep track of soil moisture.  It also has the ability to turn on water which hasn't been included in the cycle quite yet.
+
 
 ## Plans
 
