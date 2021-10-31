@@ -52,20 +52,19 @@ while True:
 			print('Sun up at {}'.format(current_time))
 			GPIO.output(light_channel, True)
 			light_on = True
-	elif light_on:
+	elif light_on: #Sun isn't up and light is on
 		print('Sun down at {}'.format(current_time))
 		GPIO.output(light_channel, False)
 		light_on = False
-		
+
+	#AD converter inputs
 	readings = [0]*8
 	for i in range(8):
 		readings[i] = mcp.read_adc(i)
 	print('\t {} Water level: {}'.format(current_time, readings[0]))
-	time.sleep(0.5)
-		
+
 	time.sleep(60)
 
-#test_run()
 
 
 
