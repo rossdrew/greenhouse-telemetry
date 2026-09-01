@@ -46,17 +46,18 @@ function StatusBar() {
           reading={status ? formatReading(status.humidity, '%') : '…'}
           color="#21deff"
         />
-        <SensorCard
-          name="Moisture"
-          reading={status ? formatReading(status.soil_moisture_percent, '%') : '…'}
-          color="#3d9e5c"
-        />
+        {status && <LightSwitchCard on={status.light_on} onChanged={refresh} />}
       </div>
 
       <div className="center">
-        {status && (
-          <>
-            <LightSwitchCard on={status.light_on} onChanged={refresh} />
+        <div className="group">
+          <span className="groupLabel">plant</span>
+          <SensorCard
+            name="Moisture"
+            reading={status ? formatReading(status.soil_moisture_percent, '%') : '…'}
+            color="#3d9e5c"
+          />
+          {status && (
             <WaterButton
               pumpOn={status.pump_on}
               secondsRemaining={status.pump_seconds_remaining}
@@ -64,8 +65,8 @@ function StatusBar() {
               maxSeconds={status.max_pump_seconds}
               onChanged={refresh}
             />
-          </>
-        )}
+          )}
+        </div>
       </div>
 
       <div className="right">
