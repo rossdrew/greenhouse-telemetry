@@ -7,6 +7,8 @@ from flask import Flask, jsonify, request
 
 from controller import GreenhouseController, PumpBusyError
 from datasource.am2302 import AM2302DataSource
+from datasource.mcp3008 import Mcp3008Adc
+from datasource.soil_moisture import SoilMoistureDataSource
 
 light_channel = 24
 water_channel = 23
@@ -16,11 +18,22 @@ config.read('config.properties')
 
 am2302 = AM2302DataSource(pin=config.getint('AM2302', 'pin'))
 
+mcp = Mcp3008Adc()
+soil_moisture = SoilMoistureDataSource(
+    mcp,
+    adc_channel=config.getint('Soil', 'adc_channel'),
+    dry_adc=config.getint('Soil', 'dry_adc'),
+    wet_adc=config.getint('Soil', 'wet_adc'),
+    min_valid_adc=config.getint('Soil', 'min_valid_adc'),
+    max_valid_adc=config.getint('Soil', 'max_valid_adc'),
+)
+
 controller = GreenhouseController(
     gpio=GPIO,
     light_channel=light_channel,
     water_channel=water_channel,
     am2302=am2302,
+    soil_moisture=soil_moisture,
     max_pump_seconds=config.getint('Watering', 'max_pump_seconds'),
     default_pump_seconds=config.getint('Watering', 'default_pump_seconds', fallback=5),
 )
