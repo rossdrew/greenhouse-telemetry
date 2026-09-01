@@ -12,11 +12,13 @@ class GreenhouseController:
     read/write operations the REST API needs. `gpio` and `am2302` are injected so this can be
     unit tested without hardware.
     """
-    def __init__(self, gpio, light_channel, water_channel, am2302, max_pump_seconds, default_pump_seconds):
+    def __init__(self, gpio, light_channel, water_channel, am2302, soil_moisture, max_pump_seconds,
+                 default_pump_seconds):
         self.gpio = gpio
         self.light_channel = light_channel
         self.water_channel = water_channel
         self.am2302 = am2302
+        self.soil_moisture = soil_moisture
         self.max_pump_seconds = max_pump_seconds
         self.default_pump_seconds = default_pump_seconds
 
@@ -33,6 +35,7 @@ class GreenhouseController:
 
     def status(self):
         humidity, temperature = self.am2302.read()
+        _, soil_moisture_percent = self.soil_moisture.read()
         with self._lock:
             pump_seconds_remaining = None
             if self._pump_off_at is not None:
@@ -40,6 +43,7 @@ class GreenhouseController:
             return {
                 'temperature': temperature,
                 'humidity': humidity,
+                'soil_moisture_percent': soil_moisture_percent,
                 'light_on': self._light_on,
                 'pump_on': self._pump_off_at is not None,
                 'pump_seconds_remaining': pump_seconds_remaining,

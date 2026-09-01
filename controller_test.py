@@ -32,6 +32,15 @@ class FakeAm2302:
         return self.humidity, self.temperature
 
 
+class FakeSoilMoisture:
+    def __init__(self, raw_adc=400, percent=45.0):
+        self.raw_adc = raw_adc
+        self.percent = percent
+
+    def read(self):
+        return self.raw_adc, self.percent
+
+
 class GreenhouseControllerTest(unittest.TestCase):
     def _make_controller(self, **overrides):
         kwargs = dict(
@@ -39,6 +48,7 @@ class GreenhouseControllerTest(unittest.TestCase):
             light_channel=24,
             water_channel=23,
             am2302=FakeAm2302(),
+            soil_moisture=FakeSoilMoisture(),
             max_pump_seconds=20,
             default_pump_seconds=5,
         )
@@ -51,10 +61,12 @@ class GreenhouseControllerTest(unittest.TestCase):
         self.assertEqual(gpio.outputs[23], False)
 
     def test_status_reports_sensor_and_switch_state(self):
-        controller, gpio = self._make_controller(am2302=FakeAm2302(60.0, 22.5))
+        controller, gpio = self._make_controller(
+            am2302=FakeAm2302(60.0, 22.5), soil_moisture=FakeSoilMoisture(400, 35.0))
         status = controller.status()
         self.assertEqual(status['humidity'], 60.0)
         self.assertEqual(status['temperature'], 22.5)
+        self.assertEqual(status['soil_moisture_percent'], 35.0)
         self.assertFalse(status['light_on'])
         self.assertFalse(status['pump_on'])
         self.assertIsNone(status['pump_seconds_remaining'])

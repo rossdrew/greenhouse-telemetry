@@ -46,6 +46,11 @@ function StatusBar() {
           reading={status ? formatReading(status.humidity, '%') : '…'}
           color="#21deff"
         />
+        <SensorCard
+          name="Moisture"
+          reading={status ? formatReading(status.soil_moisture_percent, '%') : '…'}
+          color="#3d9e5c"
+        />
       </div>
 
       <div className="center">
