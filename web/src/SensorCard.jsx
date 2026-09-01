@@ -8,7 +8,7 @@ function SensorCard({ name, reading, high, avg, low, color }) {
     { name: "high", value: high },
     { name: "average", value: avg },
     { name: "low", value: low }
-  ];
+  ].filter(({ value }) => value != null);
 
   return (
     <div className="sensorCard">
@@ -20,8 +20,8 @@ function SensorCard({ name, reading, high, avg, low, color }) {
           const Icon = sensorIcons[name];
 
           return (
-            <div name={name} className="statRow">
-              {Icon && <Icon />} {value}m
+            <div key={name} name={name} className="statRow">
+              {Icon && <Icon />} {value}
             </div>
           );
         })}

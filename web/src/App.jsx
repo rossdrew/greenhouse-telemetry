@@ -6,13 +6,9 @@ function App() {
     <>
       <StatusBar />
 
-      <section id="main-display">  
+      <section id="main-display">
         <div>
-          <h1>-- Labratory --</h1>
-          <div>
-            <i>This is a test bed for React experiments</i>
-          </div>
-          
+          <h1>Greenhouse Dashboard</h1>
         </div>
       </section>
     </>

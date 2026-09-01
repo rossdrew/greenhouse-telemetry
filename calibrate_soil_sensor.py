@@ -1,14 +1,10 @@
 import configparser
 import time
 
-import Adafruit_GPIO.SPI as SPI
-import Adafruit_MCP3008
+from datasource.mcp3008 import Mcp3008Adc
 
 SAMPLES = 10
 SAMPLE_DELAY_SECONDS = 0.2
-
-SPI_PORT = 0
-SPI_DEVICE = 0
 
 
 def average_reading(mcp, channel):
@@ -23,7 +19,7 @@ config = configparser.RawConfigParser()
 config.read('config.properties')
 channel = config.getint('Soil', 'adc_channel')
 
-mcp = Adafruit_MCP3008.MCP3008(spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE))
+mcp = Mcp3008Adc()
 
 input('Place the sensor in dry air/soil, then press Enter...')
 dry_adc = average_reading(mcp, channel)

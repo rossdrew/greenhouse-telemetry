@@ -1,10 +1,10 @@
 pygal
 flask
-Adafruit_DHT
 influxdb
 configparser
 requests
 gpiozero
 RPi.GPIO
-Adafruit_MCP3008
-Adafruit_GPIO
+Adafruit-Blinka
+adafruit-circuitpython-dht
+adafruit-circuitpython-mcp3xxx

@@ -214,6 +214,44 @@ Running in a test environment (not on a Raspberry Pi with a AM2302 sensor) will 
 
 There's a simple control cycle in place in run_greenhouse.py.  This will turn a light on during daylight hours and keep track of soil moisture.  It also has the ability to turn on water which hasn't been included in the cycle quite yet.
 
+### REST API + Web Dashboard
+
+`api_server.py` exposes the light and pump over a small Flask REST API, and `web/` is a React
+dashboard that shows live temperature/humidity and lets you flip the light and trigger watering.
+
+This owns the same `light_channel`/`water_channel` GPIO pins as `run_greenhouse.py` — don't run
+both at the same time.
+
+Start the API (on the Pi):
+
+```bash
+python api_server.py
+```
+
+which listens on port 5000 and exposes:
+
+| Method | Path | Body | Description |
+|---|---|---|---|
+| GET | `/api/status` | – | Current temperature, humidity, light state, pump state |
+| POST | `/api/light` | `{"on": true\|false}` | Turn the light on/off |
+| POST | `/api/water` | `{"seconds": 5}` (optional) | Run the pump for N seconds (clamped to `max_pump_seconds`, defaults to `default_pump_seconds`) |
+
+Start the dashboard (dev mode proxies `/api` to `localhost:5000`, see `web/vite.config.js`):
+
+```bash
+cd web
+npm install
+npm run dev
+```
+
+`vite.config.js` sets `server.host: true` so the dev server binds to all interfaces, not just
+`localhost` — from another machine on the same network, browse to `http://<pi-ip>:5173` (find
+the Pi's IP with `hostname -I` on the Pi). The `/api` proxy still targets `localhost:5000`
+because that connection is made by the Vite process itself, on the Pi, to the Flask process
+also running there — it's unrelated to where your browser is.
+
+`controller.py` holds the GPIO/timing logic behind a small interface so it can be unit tested
+without hardware — see `controller_test.py` (`python -m unittest controller_test`).
 
 ## Plans
 

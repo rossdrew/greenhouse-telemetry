@@ -1,12 +1,16 @@
 import RPi.GPIO as GPIO
+import configparser
 import time
 from datetime import datetime
 from datetime import time as dt_time
 import signal, sys
 
-#sudo pip install adafruit-mcp30008
-import Adafruit_GPIO.SPI as SPI
-import Adafruit_MCP3008
+from datasource.am2302 import AM2302DataSource
+from datasource.mcp3008 import Mcp3008Adc
+from datasource.soil_moisture import SoilMoistureDataSource
+
+config = configparser.RawConfigParser()
+config.read('config.properties')
 
 light_channel = 24
 water_channel = 23
@@ -15,10 +19,15 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(light_channel, GPIO.OUT)
 GPIO.setup(water_channel, GPIO.OUT)
 
-# Software SPI configuration:
-SPI_PORT = 0
-SPI_DEVICE = 0
-mcp = Adafruit_MCP3008.MCP3008(spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE))
+mcp = Mcp3008Adc()
+am2302 = AM2302DataSource(pin=config.getint('AM2302', 'pin'))
+soil = SoilMoistureDataSource(
+	mcp,
+	adc_channel=config.getint('Soil', 'adc_channel'),
+	dry_adc=config.getint('Soil', 'dry_adc'),
+	wet_adc=config.getint('Soil', 'wet_adc'),
+	min_valid_adc=config.getint('Soil', 'min_valid_adc'),
+	max_valid_adc=config.getint('Soil', 'max_valid_adc'))
 
 # Handler for Ctrl+C halt
 def signal_hander(sig, frame):
@@ -57,11 +66,15 @@ while True:
 		GPIO.output(light_channel, False)
 		light_on = False
 
-	#AD converter inputs
-	readings = [0]*8
-	for i in range(8):
-		readings[i] = mcp.read_adc(i)
-	print('\t {} Water level: {}'.format(current_time, readings[0]))
+	humidity, temperature = am2302.read()
+	raw_adc, moisture_percent = soil.read()
+
+	temp_str = '{0:.1f} C'.format(temperature) if temperature is not None else 'N/A'
+	humidity_str = '{0:.1f}%'.format(humidity) if humidity is not None else 'N/A'
+	moisture_str = '{0:.1f}%'.format(moisture_percent) if moisture_percent is not None else 'N/A'
+
+	print('\t {0} Temp: {1}, Humidity: {2}, Soil moisture: {3} (raw {4})'.format(
+		current_time, temp_str, humidity_str, moisture_str, raw_adc))
 
 	time.sleep(60)
 

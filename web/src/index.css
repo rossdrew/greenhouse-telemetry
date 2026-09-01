@@ -169,6 +169,45 @@ body {
   gap: 5px;
 }
 
+button.sensorCard {
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+button.sensorCard:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.waterControl {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: auto;
+  height: auto;
+  min-width: 160px;
+}
+
+.waterSeconds {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.waterSeconds input {
+  width: 60px;
+}
+
+.statusError {
+  font-size: 11px;
+  color: #ff5c5c;
+}
+
 h1,
 h2 {
   font-family: var(--heading);
